@@ -126,6 +126,7 @@ const closeModal = (modalName) => {
   justify-content: space-between;
   align-items: center;
   column-gap: 20px;
+  margin: 0 auto;
 }
 
 .app-header__burger {
