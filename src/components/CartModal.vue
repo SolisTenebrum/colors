@@ -4,6 +4,7 @@ import { useCartStore } from '@/store/cartStore'
 import { useModalStore } from '@/store/modalStore'
 import { words } from '@/constants'
 import { computed } from 'vue'
+import CartCard from './CartCard.vue'
 
 const modalStore = useModalStore()
 const cartStore = useCartStore()
@@ -55,36 +56,7 @@ const cartWord = computed(
           <p class="cart-modal__list-header-clear" @click="cartStore.clearCart">очистить список</p>
         </div>
         <div class="cart-modal__list">
-          <div class="cart-modal__list-item" v-for="product in cartStore.cart" :key="product">
-            <img
-              class="cart-modal__list-item-image"
-              :class="{ predeleted: product.predeleted }"
-              :src="product.image"
-            />
-            <div class="cart-modal__list-item-info" :class="{ predeleted: product.predeleted }">
-              <p class="cart-modal__list-item-name">{{ product.name }}</p>
-              <p class="cart-modal__list-item-price">{{ product.price * product.quantity }} ₽</p>
-            </div>
-            <div class="cart-modal__list-item-quantity" :class="{ predeleted: product.predeleted }">
-              <button
-                class="cart-modal__list-item-quantity-button minus"
-                :class="{
-                  'cart-modal__list-item-quantity-button_disabled': product.quantity === 1,
-                }"
-                @click="cartStore.decrement(product)"
-              ></button>
-              <p class="cart-modal__list-item-quantity-text">{{ product.quantity }}</p>
-              <button
-                class="cart-modal__list-item-quantity-button plus"
-                @click="cartStore.increment(product)"
-              ></button>
-            </div>
-            <button
-              class="cart-modal__list-item-delete-button"
-              :class="{ restore: product.predeleted }"
-              @click="cartStore.togglePreDelete(product)"
-            ></button>
-          </div>
+          <CartCard v-for="product in cartStore.cart" :key="product" :product="product" />
         </div>
       </div>
       <div class="cart-modal__bottom">
@@ -231,113 +203,9 @@ const cartWord = computed(
   scrollbar-width: none;
 }
 
-.cart-modal__list-item {
-  padding-bottom: 12px;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-  display: flex;
-  align-items: center;
-  margin-bottom: 12px;
-}
-
-.cart-modal__list-item:last-of-type {
-  border-bottom: 0;
-  margin-bottom: 0;
-  padding-bottom: 0;
-}
-
 .predeleted {
   opacity: 40%;
   pointer-events: none;
-}
-
-.cart-modal__list-item-image {
-  width: 96px;
-  height: 96px;
-  object-fit: cover;
-  object-position: center;
-  margin-right: 8px;
-}
-
-.cart-modal__list-item-info {
-  display: flex;
-  flex-direction: column;
-  row-gap: 16px;
-  max-width: 165px;
-  width: 100%;
-  margin-right: 62px;
-}
-
-.cart-modal__list-item-name {
-  font-size: 16px;
-  line-height: 17.92px;
-  letter-spacing: 0.32px;
-}
-
-.cart-modal__list-item-price {
-  font-size: 16px;
-  line-height: 16px;
-  font-weight: 600;
-}
-
-.cart-modal__list-item-quantity {
-  display: flex;
-  column-gap: 48px;
-  position: relative;
-  margin-right: 37px;
-}
-
-.cart-modal__list-item-quantity-button {
-  width: 40px;
-  height: 24px;
-  background-color: #f2f2f2;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: background-color 0.3s ease-in-out;
-}
-
-.cart-modal__list-item-quantity-button:hover {
-  background-color: #d9d9d9;
-}
-
-.cart-modal__list-item-quantity-button_disabled {
-  visibility: hidden;
-}
-
-.cart-modal__list-item-quantity-button.minus {
-  background-image: url('../assets/images/icons/minus.svg');
-  background-repeat: no-repeat;
-  background-position: center;
-  background-size: 16px;
-}
-.cart-modal__list-item-quantity-button.plus {
-  background-image: url('../assets/images/icons/plus.svg');
-  background-repeat: no-repeat;
-  background-position: center;
-  background-size: 16px;
-}
-
-.cart-modal__list-item-quantity-text {
-  position: absolute;
-  right: 50%;
-  top: 50%;
-  transform: translate(50%, -50%);
-}
-
-.cart-modal__list-item-delete-button {
-  cursor: pointer;
-  width: 24px;
-  height: 24px;
-  border: none;
-  background-color: transparent;
-  background-image: url('../assets/images/icons/close-transparent.svg');
-  background-repeat: no-repeat;
-  background-position: center;
-  background-size: 24px;
-}
-
-.cart-modal__list-item-delete-button.restore {
-  background-image: url('../assets/images/icons/repeat.svg');
 }
 
 .cart-modal__bottom {
@@ -402,70 +270,9 @@ const cartWord = computed(
   .cart-modal__container {
     padding: 32px 20px;
   }
-
-  .cart-modal__list-item {
-    position: relative;
-  }
-
-  .cart-modal__list-item-image {
-    grid-area: image;
-  }
-
-  .cart-modal__list-item-info {
-    margin-right: 10px;
-    max-width: none;
-    grid-area: info;
-  }
-
-  .cart-modal__list-item-quantity {
-    margin-right: 15px;
-    grid-area: quantity;
-  }
-
-  .cart-modal__list-item-delete-button {
-    grid-area: delete;
-  }
 }
 
 @media screen and (max-width: 480px) {
-  .cart-modal__list-item {
-    position: relative;
-    display: grid;
-    grid-template-areas:
-      'image info delete'
-      'quantity info delete';
-    row-gap: 10px;
-    column-gap: 5px;
-    align-items: start;
-  }
-
-  .cart-modal__list-item-info {
-    margin-left: 10px;
-  }
-
-  .cart-modal__list-item-image {
-    justify-self: center;
-    margin-right: 0;
-  }
-
-  .cart-modal__list-item-name {
-    max-width: none;
-  }
-
-  .cart-modal__list-item-quantity {
-    display: flex;
-    justify-content: space-between;
-    margin-right: 0;
-    column-gap: 14px;
-  }
-
-  .cart-modal__list-item-delete-button {
-    grid-area: delete;
-    align-self: flex-end;
-    width: 30px;
-    height: 30px;
-  }
-
   .cart-modal__total-text {
     font-size: 14px;
   }
@@ -476,11 +283,6 @@ const cartWord = computed(
 
   .cart-modal__button {
     width: 150px;
-  }
-
-  .cart-modal__list-item-quantity-button {
-    width: 26px;
-    height: 30px;
   }
 }
 </style>
