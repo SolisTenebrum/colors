@@ -1,65 +1,12 @@
 <script setup>
 import ProductCard from './ProductCard.vue'
-import switchOff from '../assets/images/icons/switch-off.svg'
-import switchOn from '../assets/images/icons/switch-on.svg'
-
 import { ref } from 'vue'
 import { useProductStore } from '@/store/productStore'
 import { useFilterModalStore } from '@/store/filterModalStore'
+import { filterButtons, sortButtons } from '@/constants'
 
 const productStore = useProductStore()
 const filterModalStore = useFilterModalStore()
-
-const filterButtons = [
-  {
-    id: 1,
-    name: 'Новинки',
-    isActive: false,
-  },
-  {
-    id: 2,
-    name: 'Есть в наличии',
-    isActive: false,
-  },
-  {
-    id: 3,
-    name: 'Контрактные',
-    isActive: false,
-  },
-  {
-    id: 4,
-    name: 'Эксклюзивные',
-    isActive: false,
-  },
-  {
-    id: 5,
-    name: 'Распродажа',
-    isActive: false,
-  },
-]
-
-const sortButtons = [
-  {
-    id: 1,
-    name: 'Сначала дорогие',
-    isActive: false,
-  },
-  {
-    id: 2,
-    name: 'Сначала недорогие',
-    isActive: false,
-  },
-  {
-    id: 3,
-    name: 'Сначала популярные',
-    isActive: false,
-  },
-  {
-    id: 4,
-    name: 'Сначала новые',
-    isActive: false,
-  },
-]
 
 const filterStates = ref(filterButtons)
 const sortStates = ref(sortButtons)
@@ -96,10 +43,12 @@ const toggleFilters = (filterId) => {
 
 const openSortFilter = () => {
   isSortOpen.value = !isSortOpen.value
+  document.body.style.overflow = 'hidden'
 }
 
 const closeSortFilter = () => {
   isSortOpen.value = false
+  document.body.style.overflow = 'auto'
 }
 
 const selectSort = (sortId, sortText) => {
@@ -128,16 +77,21 @@ const selectSort = (sortId, sortText) => {
 
 const openFilterModal = () => {
   filterModalStore.openModal()
+  document.body.style.overflow = 'hidden'
 }
 
 const closeFilterModal = () => {
   filterModalStore.closeModal()
+  document.body.style.overflow = 'auto'
 }
 </script>
 
 <template>
   <section class="product-list">
-    <div class="product-list__overlay" v-if="isSortOpen || filterModalStore.isModalOpen"></div>
+    <div
+      class="product-list__overlay"
+      :class="{ active: isSortOpen || filterModalStore.isModalOpen }"
+    ></div>
     <div class="product-list__container">
       <h1 class="product-list__title">Краски</h1>
       <div class="product-list__filter">
@@ -147,7 +101,7 @@ const closeFilterModal = () => {
           @click="toggleFilters(filter.id)"
           :key="filter"
         >
-          <img class="product-list__filter-icon" :src="filter.isActive ? switchOn : switchOff" />
+          <div class="product-list__filter-icon" :class="{ active: filter.isActive }"></div>
           <p class="product-list__filter-text">{{ filter.name }}</p>
         </div>
       </div>
@@ -161,7 +115,7 @@ const closeFilterModal = () => {
           >
             {{ sortMainText }}
           </p>
-          <div class="product-list__sort-select" v-if="isSortOpen">
+          <div class="product-list__sort-select" :class="{ active: isSortOpen }">
             <p
               class="product-list__sort-select-text"
               v-for="sort in sortStates"
@@ -173,17 +127,21 @@ const closeFilterModal = () => {
           </div>
         </div>
         <div class="product-list__bottom">
-          <div class="product-list__products">
+          <div class="product-list__products" v-if="productStore.products.length > 0">
             <ProductCard
               v-for="product in productStore.products"
               :key="product.id"
               :product="product"
             ></ProductCard>
           </div>
+          <p class="product-list__quantity product-list__quantity_empty" v-else>нет товаров</p>
         </div>
       </div>
     </div>
-    <div class="product-list__filter-mobile-popup" v-if="filterModalStore.isModalOpen">
+    <div
+      class="product-list__filter-mobile-popup"
+      :class="{ active: filterModalStore.isModalOpen }"
+    >
       <div class="product-list__filter-mobile-line" @click="closeFilterModal"></div>
       <div class="product-list__filter product-list__filter-mobile">
         <div
@@ -192,7 +150,7 @@ const closeFilterModal = () => {
           @click="toggleFilters(filter.id)"
           :key="filter"
         >
-          <img class="product-list__filter-icon" :src="filter.isActive ? switchOn : switchOff" />
+          <div class="product-list__filter-icon" :class="{ active: filter.isActive }"></div>
           <p class="product-list__filter-text">{{ filter.name }}</p>
         </div>
       </div>
@@ -229,12 +187,26 @@ const closeFilterModal = () => {
 }
 
 .product-list__filter-mobile-popup {
-  display: none;
+  visibility: hidden;
+  position: absolute;
+  transition:
+    transform 0.3s ease,
+    visibility 0.3s ease;
 }
 
 .product-list__filter-icon {
   width: 36px;
   height: 22px;
+  background-image: url('../assets/images/icons/switch-off.svg');
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 36px 22px;
+  cursor: pointer;
+  transition: background-image 0.2s ease;
+}
+
+.product-list__filter-icon.active {
+  background-image: url('../assets/images/icons/switch-on.svg');
 }
 
 .product-list__filter-text {
@@ -277,6 +249,10 @@ const closeFilterModal = () => {
   font-weight: 600;
 }
 
+.product-list__quantity_empty {
+  display: none;
+}
+
 .product-list__sort-text {
   cursor: pointer;
 }
@@ -299,6 +275,7 @@ const closeFilterModal = () => {
 }
 
 .product-list__overlay {
+  visibility: hidden;
   position: absolute;
   top: 0;
   left: 0;
@@ -308,6 +285,15 @@ const closeFilterModal = () => {
   height: 100%;
   background-color: rgba(0, 0, 0, 0.7);
   z-index: 15;
+  opacity: 0;
+  transition:
+    opacity 0.3s ease,
+    visibility 0.3s ease;
+}
+
+.product-list__overlay.active {
+  visibility: visible;
+  opacity: 1;
 }
 
 .product-list__sort-select {
@@ -315,6 +301,16 @@ const closeFilterModal = () => {
   top: 0;
   right: 1%;
   z-index: 20;
+  visibility: hidden;
+  opacity: 0;
+  transition:
+    opacity 0.3s ease,
+    visibility 0.3s ease;
+}
+
+.product-list__sort-select.active {
+  visibility: visible;
+  opacity: 1;
 }
 
 .product-list__sort-select-text {
@@ -326,6 +322,7 @@ const closeFilterModal = () => {
   font-weight: 600;
   background-color: #fff;
   cursor: pointer;
+  transition: background-color 0.3s ease-in-out;
 }
 
 .product-list__sort-select-text:hover {
@@ -388,7 +385,7 @@ const closeFilterModal = () => {
   }
 
   .product-list__filter-mobile-popup {
-    display: block;
+    transform: translateY(318px);
     position: fixed;
     bottom: 0;
     left: 0;
@@ -398,6 +395,16 @@ const closeFilterModal = () => {
     z-index: 50;
     border-top-left-radius: 24px;
     border-top-right-radius: 24px;
+  }
+
+  .product-list__quantity_empty {
+    display: block;
+    text-align: center;
+  }
+
+  .product-list__filter-mobile-popup.active {
+    transform: translateY(0);
+    visibility: visible;
   }
 
   .product-list__filter-mobile {

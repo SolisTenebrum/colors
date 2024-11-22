@@ -2,15 +2,15 @@
 import closeCartModalIcon from '../assets/images/icons/empty-circle.svg'
 import { useCartModalStore } from '@/store/cartModalStore'
 import { useCartStore } from '@/store/cartStore'
+import { words } from '@/constants'
 
 const cartModalStore = useCartModalStore()
 const cartStore = useCartStore()
 
 const closeModal = () => {
   cartModalStore.closeModal()
+  document.body.style.overflow = 'auto'
 }
-
-const words = ['товар', 'товара', 'товаров']
 
 const getWordForm = (number, words) => {
   number = Math.abs(number) % 100
@@ -33,9 +33,9 @@ const getWordForm = (number, words) => {
 </script>
 
 <template>
-  <div class="cart-modal" v-if="cartModalStore.isModalOpen">
-    <div class="cart-modal__overlay"></div>
-    <div class="cart-modal__container">
+  <div class="cart-modal" :class="{ active: cartModalStore.isModalOpen }">
+    <div class="cart-modal__overlay" :class="{ active: cartModalStore.isModalOpen }"></div>
+    <div class="cart-modal__container" :class="{ active: cartModalStore.isModalOpen }">
       <div class="cart-modal__top">
         <p class="cart-modal__title">Корзина</p>
         <img :src="closeCartModalIcon" class="cart-modal__close" @click="closeModal" />
@@ -109,6 +109,11 @@ const getWordForm = (number, words) => {
 
 <style scoped>
 .cart-modal {
+  visibility: hidden;
+}
+
+.cart-modal.active {
+  visibility: visible;
 }
 
 .cart-modal__overlay {
@@ -118,7 +123,17 @@ const getWordForm = (number, words) => {
   right: 0;
   bottom: 0;
   background-color: rgba(0, 0, 0, 0.7);
-  z-index: 50;
+  z-index: 25;
+  opacity: 0;
+  visibility: hidden;
+  transition:
+    opacity 0.3s ease-in-out,
+    visibility 0.3s ease-in-out;
+}
+
+.cart-modal__overlay.active {
+  opacity: 1;
+  visibility: visible;
 }
 
 .cart-modal__container {
@@ -133,7 +148,18 @@ const getWordForm = (number, words) => {
   padding: 32px 40px 40px 40px;
   display: flex;
   flex-direction: column;
-  z-index: 100;
+  z-index: 26;
+  transform: translateX(100%);
+  transition:
+    transform 0.3s ease-in-out,
+    visibility 0.3s ease-in-out;
+  visibility: hidden;
+}
+
+.cart-modal__container.active {
+  visibility: visible;
+  transform: translateX(0);
+  transition: transform 0.3s ease-in-out;
 }
 
 .cart-modal__top {
@@ -185,6 +211,11 @@ const getWordForm = (number, words) => {
   font-size: 14px;
   font-weight: 300;
   line-height: 15.68px;
+  transition: opacity 0.3s ease-in-out;
+}
+
+.cart-modal__list-header-clear:hover {
+  opacity: 100%;
 }
 
 .cart-modal__list {
@@ -255,6 +286,11 @@ const getWordForm = (number, words) => {
   border: none;
   border-radius: 8px;
   cursor: pointer;
+  transition: background-color 0.3s ease-in-out;
+}
+
+.cart-modal__list-item-quantity-button:hover {
+  background-color: #d9d9d9;
 }
 
 .cart-modal__list-item-quantity-button_disabled {
@@ -336,12 +372,22 @@ const getWordForm = (number, words) => {
   font-size: 12px;
   line-height: 14.52px;
   letter-spacing: 0.72px;
+  transition: transform 0.3s ease-in-out;
+}
+
+.cart-modal__button:hover:not(.cart-modal__button_disabled) {
+  transform: scale(1.05);
+}
+
+.cart-modal__button:active:not(.cart-modal__button_disabled) {
+  transform: scale(0.95);
 }
 
 .cart-modal__button_disabled {
   opacity: 60%;
-  background-color: grey;
+  background-color: rgb(124, 124, 124);
   cursor: not-allowed;
+  color: rgb(148, 20, 20);
 }
 
 @media screen and (max-width: 768px) {

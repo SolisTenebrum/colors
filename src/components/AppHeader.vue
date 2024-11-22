@@ -11,14 +11,17 @@ const burgerModalStore = useBurgerModalStore()
 
 const openCartModal = () => {
   cartModalStore.openModal()
+  document.body.style.overflow = 'hidden'
 }
 
 const openBurgerModal = () => {
   burgerModalStore.openModal()
+  document.body.style.overflow = 'hidden'
 }
 
 const closeBurgerModal = () => {
   burgerModalStore.closeModal()
+  document.body.style.overflow = 'auto'
 }
 </script>
 
@@ -69,8 +72,15 @@ const closeBurgerModal = () => {
     </div>
     <div class="app-header__line"></div>
   </header>
-  <div class="app-header__burger-menu-overlay" v-if="burgerModalStore.isModalOpen"></div>
-  <div class="app-header__burger-menu" v-if="burgerModalStore.isModalOpen">
+  <div
+    class="app-header__burger-menu-overlay"
+    :class="{ active: burgerModalStore.isModalOpen }"
+  ></div>
+  <div
+    class="app-header__burger-menu"
+    ref="popup"
+    :class="{ active: burgerModalStore.isModalOpen }"
+  >
     <img
       class="app-header__burger-menu-close"
       :src="closeCartModalIcon"
@@ -153,12 +163,30 @@ const closeBurgerModal = () => {
 }
 
 .app-header__burger-menu-overlay {
-  display: none;
+  visibility: hidden;
+  opacity: 0;
+  transition:
+    opacity 0.3s ease-in-out,
+    visibility 0.3s ease-in-out;
+}
+
+.app-header__burger-menu-overlay.active {
+  visibility: visible;
+  opacity: 1;
 }
 
 .app-header__burger-menu {
-  display: none;
-  position: relative;
+  visibility: hidden;
+  position: absolute;
+  transform: translateY(-100%);
+  transition:
+    transform 0.3s ease-in-out,
+    visibility 0.3s ease-in-out;
+}
+
+.app-header__burger-menu.active {
+  visibility: visible;
+  transform: translateY(0);
 }
 
 .app-header__left {
@@ -189,6 +217,11 @@ const closeBurgerModal = () => {
   line-height: 14px;
   font-weight: 400;
   letter-spacing: 0.84px;
+  transition: color 0.3s ease-in-out;
+}
+
+.app-header__list-item:hover {
+  color: #7bb899;
 }
 
 .app-header__link {
@@ -207,6 +240,11 @@ const closeBurgerModal = () => {
   line-height: 16px;
   font-weight: 600;
   letter-spacing: -0.28px;
+  transition: color 0.3s ease-in-out;
+}
+
+.app-header__phone-link:hover {
+  color: #7bb899;
 }
 
 .app-header__phone-text {
@@ -227,6 +265,11 @@ const closeBurgerModal = () => {
   width: 20px;
   height: 20px;
   cursor: pointer;
+  transition: transform 0.3s ease-in-out;
+}
+
+.app-header__icon:hover {
+  transform: scale(1.2);
 }
 
 .app-header__icon:nth-of-type(2) {
@@ -245,6 +288,11 @@ const closeBurgerModal = () => {
   background-position: center;
   background-size: contain;
   align-self: center;
+  transition: transform 0.3s ease-in-out;
+}
+
+.app-header__cart:hover {
+  transform: scale(1.2);
 }
 
 .app-header__cart-icon {
@@ -356,7 +404,7 @@ const closeBurgerModal = () => {
     right: 0;
     bottom: 0;
     background-color: rgba(0, 0, 0, 0.5);
-    z-index: 49;
+    z-index: 25;
   }
 
   .app-header__burger-menu {
@@ -366,18 +414,18 @@ const closeBurgerModal = () => {
     right: 0;
     bottom: 0;
     background-color: #fff;
-    z-index: 50;
+    z-index: 26;
     max-width: 100%;
     width: 100%;
-    height: 50%;
+    height: 500px;
     display: flex;
     flex-direction: column;
   }
 
   .app-header__burger-menu-close {
     position: absolute;
-    right: 10px;
-    top: 10px;
+    left: 16px;
+    top: 16px;
     cursor: pointer;
     width: 40px;
     height: 40px;

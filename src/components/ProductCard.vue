@@ -37,7 +37,8 @@ const handleAddToCart = (product) => {
 }
 
 .product-card:hover .product-card__button {
-  visibility: visible;
+  opacity: 1;
+  pointer-events: all;
 }
 
 .product-card__image {
@@ -72,7 +73,6 @@ const handleAddToCart = (product) => {
 }
 
 .product-card__button {
-  visibility: hidden;
   grid-area: button;
   justify-self: flex-end;
   cursor: pointer;
@@ -85,6 +85,24 @@ const handleAddToCart = (product) => {
   align-items: center;
   outline: none;
   border: none;
+  opacity: 0;
+  pointer-events: none;
+  transition:
+    opacity 0.3s ease-in-out,
+    transform 0.1s ease-in-out;
+}
+
+.product-card__button:hover {
+  background-color: #5e8d75;
+  transform: scale(1.05);
+}
+
+.product-card__button:active {
+  transform: scale(0.95);
+}
+
+.product-card__button-icon {
+  transition: transform 0.3s ease-in-out;
 }
 
 @media screen and (max-width: 1024px) {
@@ -96,8 +114,8 @@ const handleAddToCart = (product) => {
   }
 
   .product-card__button {
-    visibility: visible;
     background-color: #f2f2f2;
+    opacity: 1;
   }
 }
 
