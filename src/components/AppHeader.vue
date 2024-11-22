@@ -20,10 +20,17 @@ const closeModal = (modalName) => {
   modalStore.closeModal(modalName)
   document.body.style.overflow = 'auto'
 }
+
+const scrollToTop = () => {
+  window.scrollTo({
+    top: 0,
+    behavior: 'smooth',
+  })
+}
 </script>
 
 <template>
-  <header class="app-header">
+  <header class="app-header" id="header">
     <div class="app-header__container">
       <div class="app-header__burger" @click="openModal('burgerModal')">
         <div class="app-header__burger-line"></div>
@@ -31,7 +38,7 @@ const closeModal = (modalName) => {
         <div class="app-header__burger-line"></div>
       </div>
       <div class="app-header__left">
-        <img class="app-header__logo" :src="logo" alt="logo" />
+        <img class="app-header__logo" :src="logo" alt="logo" @click="scrollToTop" />
         <nav class="app-header__nav">
           <ul class="app-header__list">
             <li class="app-header__list-item" v-for="item in navItems" :key="item">
