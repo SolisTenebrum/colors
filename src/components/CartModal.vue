@@ -320,7 +320,8 @@ const cartWord = computed(
 .cart-modal__list-item-quantity-text {
   position: absolute;
   right: 50%;
-  transform: translateX(50%);
+  top: 50%;
+  transform: translate(50%, -50%);
 }
 
 .cart-modal__list-item-delete-button {
@@ -453,7 +454,7 @@ const cartWord = computed(
 
   .cart-modal__list-item-quantity {
     display: flex;
-    justify-content: space-around;
+    justify-content: space-between;
     margin-right: 0;
     column-gap: 14px;
   }
@@ -461,6 +462,8 @@ const cartWord = computed(
   .cart-modal__list-item-delete-button {
     grid-area: delete;
     align-self: flex-end;
+    width: 30px;
+    height: 30px;
   }
 
   .cart-modal__total-text {
@@ -473,6 +476,11 @@ const cartWord = computed(
 
   .cart-modal__button {
     width: 150px;
+  }
+
+  .cart-modal__list-item-quantity-button {
+    width: 26px;
+    height: 30px;
   }
 }
 </style>
