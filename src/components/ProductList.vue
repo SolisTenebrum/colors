@@ -358,6 +358,17 @@ const closeFilterModal = (modalName) => {
   grid-template-columns: repeat(5, 1fr);
   column-gap: 24px;
   row-gap: 16px;
+  position: relative;
+}
+
+.product-list__products::after {
+  content: '';
+  position: absolute;
+  display: block;
+  width: 100%;
+  height: 2px;
+  bottom: 0;
+  background-color: #fff;
 }
 
 @media screen and (max-width: 1500px) {
