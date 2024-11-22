@@ -1,63 +1,21 @@
 <script setup>
 import { register } from 'swiper/element/bundle'
-import {
-  slideOne,
-  slideTwo,
-  slideThree,
-  slideFour,
-  slideFive,
-  slideSix,
-} from '@/assets/images/slider-images'
-
+import { slides } from '@/constants'
 import 'swiper/swiper-bundle.css'
 import { ref } from 'vue'
 register()
 
-const slides = [
-  {
-    image: slideOne,
-    title: 'Краски',
-    subtitle: 'Идеально подходят для стен и других поверхностей. Найди свой идеальный цвет!',
-    alt: 'Ваза с цветком на зеленом фоне',
-  },
-  {
-    image: slideTwo,
-    title: 'Lorem ipsum.',
-    subtitle: 'In hac habitasse platea dictumst.',
-    alt: 'Ваза с цветком на зеленом фоне',
-  },
-  {
-    image: slideThree,
-    title: 'Dolor sit amet.',
-    subtitle: 'Sed porta justo eu nunc vehicula, quis ultricies odio laoreet.',
-    alt: 'Ваза с цветком на зеленом фоне',
-  },
-  {
-    image: slideFour,
-    title: 'Consectetur.',
-    subtitle: 'In lorem sapien, ullamcorper sit amet neque sed, vestibulum tempus dui. ',
-    alt: 'Ваза с цветком на зеленом фоне',
-  },
-  {
-    image: slideFive,
-    title: 'Adipiscing elit.',
-    subtitle:
-      'Proin cursus sed justo in viverra. Vivamus dapibus sapien sed eros tempor consequat.',
-    alt: 'Ваза с цветком на зеленом фоне',
-  },
-  {
-    image: slideSix,
-    title: 'Sed ultricies.',
-    subtitle:
-      'Vivamus ac neque vitae lacus sodales rutrum eu vitae diam. Suspendisse luctus magna et accumsan tempor. Pellentesque et viverra erat.',
-    alt: 'Ваза с цветком на зеленом фоне',
-  },
-]
 const activeSlide = ref(0)
 const swiperRef = ref(null)
 
 const goToSlide = (index) => {
-  swiperRef.value.swiper.slideTo(index)
+  if (swiperRef.value) {
+    const realIndex = swiperRef.value.swiper.slides
+      .map((slide) => slide.getAttribute('data-swiper-slide-index'))
+      .indexOf(index.toString())
+
+    swiperRef.value.swiper.slideTo(realIndex)
+  }
 }
 
 const onSlideChange = () => {
@@ -180,11 +138,16 @@ const onSlideChange = () => {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  z-index: 10;
+  z-index: 3;
   text-align: center;
   color: white;
   max-width: 490px;
   width: 100%;
+  cursor: grab;
+}
+
+.home-slider__text:active {
+  cursor: grabbing;
 }
 
 .home-slider__title {
@@ -217,7 +180,7 @@ const onSlideChange = () => {
   background-repeat: no-repeat;
   background-size: contain;
   cursor: pointer;
-  z-index: 10;
+  z-index: 3;
   background-color: transparent;
   padding: 0;
 }
@@ -239,7 +202,7 @@ const onSlideChange = () => {
   border-radius: 16px;
   bottom: 40px;
   left: 50%;
-  z-index: 5;
+  z-index: 3;
   transform: translateX(-50%);
 }
 
