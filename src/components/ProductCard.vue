@@ -21,7 +21,7 @@ const handleAddToCart = (product) => {
     <img class="product-card__image" :src="product.image" alt="paint" />
     <div class="product-card__info">
       <p class="product-card__name">{{ product.name }}</p>
-      <p class="product-card__price">{{ product.price }} ₽</p>
+      <p class="product-card__price">{{ Math.floor(product.price) }} ₽</p>
       <button class="product-card__button" @click="handleAddToCart(product)">
         <img :src="plus" class="product-card__button-icon" />
       </button>
@@ -34,6 +34,8 @@ const handleAddToCart = (product) => {
   max-width: 278px;
   padding-bottom: 14px;
   border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
 }
 
 .product-card:hover .product-card__button {
@@ -55,6 +57,8 @@ const handleAddToCart = (product) => {
     'price button';
   align-items: center;
   row-gap: 16px;
+  height: 100%;
+  align-content: space-between;
 }
 
 .product-card__name {
@@ -63,6 +67,7 @@ const handleAddToCart = (product) => {
   font-weight: 300;
   line-height: 17.92px;
   letter-spacing: 0.32px;
+  align-self: flex-start;
 }
 
 .product-card__price {
@@ -90,6 +95,7 @@ const handleAddToCart = (product) => {
   transition:
     opacity 0.3s ease-in-out,
     transform 0.1s ease-in-out;
+  align-self: self-end;
 }
 
 .product-card__button:hover {

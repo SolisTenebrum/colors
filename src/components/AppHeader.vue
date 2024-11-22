@@ -1,26 +1,23 @@
 <script setup>
 import logo from '../assets/images/icons/logo.svg'
+import searchIcon from '../assets/images/icons/search.svg'
+import profileIcon from '../assets/images/icons/profile.svg'
+import heartIcon from '../assets/images/icons/heart.svg'
 import closeCartModalIcon from '../assets/images/icons/empty-circle.svg'
-import { useCartModalStore } from '@/store/cartModalStore'
 import { useCartStore } from '@/store/cartStore'
-import { useBurgerModalStore } from '@/store/burgerModalStore'
+import { useModalStore } from '@/store/modalStore'
+import { navItems } from '@/constants/index.js'
 
-const cartModalStore = useCartModalStore()
+const modalStore = useModalStore()
 const cartStore = useCartStore()
-const burgerModalStore = useBurgerModalStore()
 
-const openCartModal = () => {
-  cartModalStore.openModal()
+const openModal = (modalName) => {
+  modalStore.openModal(modalName)
   document.body.style.overflow = 'hidden'
 }
 
-const openBurgerModal = () => {
-  burgerModalStore.openModal()
-  document.body.style.overflow = 'hidden'
-}
-
-const closeBurgerModal = () => {
-  burgerModalStore.closeModal()
+const closeModal = (modalName) => {
+  modalStore.closeModal(modalName)
   document.body.style.overflow = 'auto'
 }
 </script>
@@ -28,7 +25,7 @@ const closeBurgerModal = () => {
 <template>
   <header class="app-header">
     <div class="app-header__container">
-      <div class="app-header__burger" @click="openBurgerModal">
+      <div class="app-header__burger" @click="openModal('burgerModal')">
         <div class="app-header__burger-line"></div>
         <div class="app-header__burger-line"></div>
         <div class="app-header__burger-line"></div>
@@ -37,20 +34,8 @@ const closeBurgerModal = () => {
         <img class="app-header__logo" :src="logo" alt="logo" />
         <nav class="app-header__nav">
           <ul class="app-header__list">
-            <li class="app-header__list-item">
-              <a class="app-header__link" href="#">Продукты</a>
-            </li>
-            <li class="app-header__list-item">
-              <a class="app-header__link" href="#">Цвета</a>
-            </li>
-            <li class="app-header__list-item">
-              <a class="app-header__link" href="#">Вдохновение</a>
-            </li>
-            <li class="app-header__list-item">
-              <a class="app-header__link" href="#">Советы</a>
-            </li>
-            <li class="app-header__list-item">
-              <a class="app-header__link" href="#">Найти магазин</a>
+            <li class="app-header__list-item" v-for="item in navItems" :key="item">
+              <a class="app-header__link" :href="item.link">{{ item.name }}</a>
             </li>
           </ul>
         </nav>
@@ -61,11 +46,11 @@ const closeBurgerModal = () => {
           <p class="app-header__phone-text">Заказать звонок</p>
         </div>
         <div class="app-header__icons">
-          <img class="app-header__icon" src="../assets/images/icons/search.svg" alt="search" />
-          <img class="app-header__icon" src="../assets/images/icons/profile.svg" alt="profile" />
-          <img class="app-header__icon" src="../assets/images/icons/heart.svg" alt="heart" />
+          <img class="app-header__icon" :src="searchIcon" alt="search" />
+          <img class="app-header__icon" :src="profileIcon" alt="profile" />
+          <img class="app-header__icon" :src="heartIcon" alt="heart" />
         </div>
-        <div class="app-header__cart" @click="openCartModal">
+        <div class="app-header__cart" @click="openModal('cartModal')">
           <p class="app-header__cart-icon">{{ cartStore.getCartLength }}</p>
         </div>
       </div>
@@ -74,35 +59,27 @@ const closeBurgerModal = () => {
   </header>
   <div
     class="app-header__burger-menu-overlay"
-    :class="{ active: burgerModalStore.isModalOpen }"
+    :class="{ active: modalStore.modals.burgerModal }"
   ></div>
   <div
     class="app-header__burger-menu"
     ref="popup"
-    :class="{ active: burgerModalStore.isModalOpen }"
+    :class="{ active: modalStore.modals.burgerModal }"
   >
     <img
       class="app-header__burger-menu-close"
       :src="closeCartModalIcon"
       alt="close"
-      @click="closeBurgerModal"
+      @click="closeModal('burgerModal')"
     />
     <nav class="app-header__nav app-header__nav-mobile">
       <ul class="app-header__list app-header__list-mobile">
-        <li class="app-header__list-item app-header__list-item-mobile">
-          <a class="app-header__link" href="#">Продукты</a>
-        </li>
-        <li class="app-header__list-item app-header__list-item-mobile">
-          <a class="app-header__link" href="#">Цвета</a>
-        </li>
-        <li class="app-header__list-item app-header__list-item-mobile">
-          <a class="app-header__link" href="#">Вдохновение</a>
-        </li>
-        <li class="app-header__list-item app-header__list-item-mobile">
-          <a class="app-header__link" href="#">Советы</a>
-        </li>
-        <li class="app-header__list-item app-header__list-item-mobile">
-          <a class="app-header__link" href="#">Найти магазин</a>
+        <li
+          class="app-header__list-item app-header__list-item-mobile"
+          v-for="item in navItems"
+          :key="item"
+        >
+          <a class="app-header__link" :href="item.link">{{ item.name }}</a>
         </li>
       </ul>
     </nav>
@@ -283,12 +260,10 @@ const closeBurgerModal = () => {
   position: relative;
   width: 24px;
   height: 24px;
-  background-image: url('../assets/images/icons/circle.svg');
-  background-repeat: no-repeat;
-  background-position: center;
-  background-size: contain;
   align-self: center;
   transition: transform 0.3s ease-in-out;
+  background-color: #7bb899;
+  border-radius: 50%;
 }
 
 .app-header__cart:hover {
@@ -381,11 +356,6 @@ const closeBurgerModal = () => {
 
   .app-header__icons {
     display: none;
-  }
-
-  .app-header__cart {
-    width: 30px;
-    height: 21px;
   }
 
   .app-header__cart-icon {

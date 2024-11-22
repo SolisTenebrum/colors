@@ -1,17 +1,21 @@
 <script setup>
 import ProductCard from './ProductCard.vue'
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
 import { useProductStore } from '@/store/productStore'
-import { useFilterModalStore } from '@/store/filterModalStore'
 import { filterButtons, sortButtons } from '@/constants'
+import { useModalStore } from '@/store/modalStore'
 
+const modalStore = useModalStore()
 const productStore = useProductStore()
-const filterModalStore = useFilterModalStore()
 
 const filterStates = ref(filterButtons)
 const sortStates = ref(sortButtons)
 const isSortOpen = ref(false)
 const sortMainText = ref('Сначала дорогие')
+
+onMounted(() => {
+  productStore.fetchProducts()
+})
 
 const toggleFilters = (filterId) => {
   const filter = filterStates.value.find((filter) => filter.id === filterId)
@@ -75,13 +79,13 @@ const selectSort = (sortId, sortText) => {
   }
 }
 
-const openFilterModal = () => {
-  filterModalStore.openModal()
+const openFilterModal = (modalName) => {
+  modalStore.openModal(modalName)
   document.body.style.overflow = 'hidden'
 }
 
-const closeFilterModal = () => {
-  filterModalStore.closeModal()
+const closeFilterModal = (modalName) => {
+  modalStore.closeModal(modalName)
   document.body.style.overflow = 'auto'
 }
 </script>
@@ -90,7 +94,7 @@ const closeFilterModal = () => {
   <section class="product-list">
     <div
       class="product-list__overlay"
-      :class="{ active: isSortOpen || filterModalStore.isModalOpen }"
+      :class="{ active: isSortOpen || modalStore.modals.filterModal }"
     ></div>
     <div class="product-list__container">
       <h1 class="product-list__title">Краски</h1>
@@ -107,8 +111,15 @@ const closeFilterModal = () => {
       </div>
       <div class="product-list__content">
         <div class="product-list__top">
-          <p class="product-list__quantity">{{ productStore.products.length }} товаров</p>
-          <p class="product-list__filter-mobile-button" @click="openFilterModal">Фильтры</p>
+          <p class="product-list__quantity" v-if="!productStore.isLoading">
+            {{ productStore.products.length }} товаров
+          </p>
+          <p class="product-list__quantity" v-else>
+            {{ productStore.isLoading && 'Загрузка товаров...' }}
+          </p>
+          <p class="product-list__filter-mobile-button" @click="openFilterModal('filterModal')">
+            Фильтры
+          </p>
           <p
             :class="`product-list__sort-text` + (isSortOpen ? ' active' : '')"
             @click="openSortFilter"
@@ -127,22 +138,31 @@ const closeFilterModal = () => {
           </div>
         </div>
         <div class="product-list__bottom">
-          <div class="product-list__products" v-if="productStore.products.length > 0">
+          <div
+            class="product-list__products"
+            v-if="productStore.products.length > 0 && !productStore.isLoading"
+          >
             <ProductCard
               v-for="product in productStore.products"
               :key="product.id"
               :product="product"
             ></ProductCard>
           </div>
+          <p
+            class="product-list__quantity product-list__quantity_empty"
+            v-else-if="productStore.isLoading"
+          >
+            Загрузка...
+          </p>
           <p class="product-list__quantity product-list__quantity_empty" v-else>нет товаров</p>
         </div>
       </div>
     </div>
     <div
       class="product-list__filter-mobile-popup"
-      :class="{ active: filterModalStore.isModalOpen }"
+      :class="{ active: modalStore.modals.filterModal }"
     >
-      <div class="product-list__filter-mobile-line" @click="closeFilterModal"></div>
+      <div class="product-list__filter-mobile-line" @click="closeFilterModal('filterModal')"></div>
       <div class="product-list__filter product-list__filter-mobile">
         <div
           class="product-list__filter-button-container"

@@ -7,6 +7,29 @@ import {
   slideSix,
 } from '@/assets/images/slider-images'
 
+const navItems = [
+  {
+    name: 'Продукты',
+    link: '#',
+  },
+  {
+    name: 'Цвета',
+    link: '#',
+  },
+  {
+    name: 'Вдохновение',
+    link: '#',
+  },
+  {
+    name: 'Советы',
+    link: '#',
+  },
+  {
+    name: 'Найти магазин',
+    link: '#',
+  },
+]
+
 const words = ['товар', 'товара', 'товаров']
 
 const slides = [
@@ -101,4 +124,4 @@ const sortButtons = [
   },
 ]
 
-export { words, slides, filterButtons, sortButtons }
+export { words, slides, filterButtons, sortButtons, navItems }

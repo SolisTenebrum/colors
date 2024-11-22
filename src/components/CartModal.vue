@@ -1,14 +1,15 @@
 <script setup>
 import closeCartModalIcon from '../assets/images/icons/empty-circle.svg'
-import { useCartModalStore } from '@/store/cartModalStore'
 import { useCartStore } from '@/store/cartStore'
+import { useModalStore } from '@/store/modalStore'
 import { words } from '@/constants'
+import { computed } from 'vue'
 
-const cartModalStore = useCartModalStore()
+const modalStore = useModalStore()
 const cartStore = useCartStore()
 
-const closeModal = () => {
-  cartModalStore.closeModal()
+const closeModal = (modalName) => {
+  modalStore.closeModal(modalName)
   document.body.style.overflow = 'auto'
 }
 
@@ -30,21 +31,23 @@ const getWordForm = (number, words) => {
 
   return words[2]
 }
+
+const cartWord = computed(
+  () => `${cartStore.getCartLength} ${getWordForm(cartStore.getCartLength, words)}`,
+)
 </script>
 
 <template>
-  <div class="cart-modal" :class="{ active: cartModalStore.isModalOpen }">
-    <div class="cart-modal__overlay" :class="{ active: cartModalStore.isModalOpen }"></div>
-    <div class="cart-modal__container" :class="{ active: cartModalStore.isModalOpen }">
+  <div class="cart-modal" :class="{ active: modalStore.modals.cartModal }">
+    <div class="cart-modal__overlay" :class="{ active: modalStore.modals.cartModal }"></div>
+    <div class="cart-modal__container" :class="{ active: modalStore.modals.cartModal }">
       <div class="cart-modal__top">
         <p class="cart-modal__title">Корзина</p>
-        <img :src="closeCartModalIcon" class="cart-modal__close" @click="closeModal" />
+        <img :src="closeCartModalIcon" class="cart-modal__close" @click="closeModal('cartModal')" />
       </div>
       <div class="cart-modal__content">
         <div class="cart-modal__list-header">
-          <p class="cart-modal__list-header-text">
-            {{ cartStore.getCartLength }} {{ getWordForm(cartStore.getCartLength, words) }}
-          </p>
+          <p class="cart-modal__list-header-text">{{ cartWord }}</p>
           <p class="cart-modal__list-header-clear" @click="cartStore.clearCart">очистить список</p>
         </div>
         <div class="cart-modal__list">
@@ -425,14 +428,13 @@ const getWordForm = (number, words) => {
     display: grid;
     grid-template-areas:
       'image info delete'
-      'quantity info .';
+      'quantity info delete';
     row-gap: 10px;
     column-gap: 5px;
     align-items: start;
   }
 
   .cart-modal__list-item-info {
-    margin-right: 0;
     margin-left: 10px;
   }
 
@@ -449,11 +451,12 @@ const getWordForm = (number, words) => {
     display: flex;
     justify-content: space-around;
     margin-right: 0;
+    column-gap: 14px;
   }
 
   .cart-modal__list-item-delete-button {
     grid-area: delete;
-    align-self: flex-start;
+    align-self: flex-end;
   }
 
   .cart-modal__total-text {
