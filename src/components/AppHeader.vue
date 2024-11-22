@@ -60,6 +60,7 @@ const closeModal = (modalName) => {
   <div
     class="app-header__burger-menu-overlay"
     :class="{ active: modalStore.modals.burgerModal }"
+    @click="closeModal('burgerModal')"
   ></div>
   <div
     class="app-header__burger-menu"

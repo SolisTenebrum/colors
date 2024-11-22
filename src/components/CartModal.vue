@@ -39,7 +39,11 @@ const cartWord = computed(
 
 <template>
   <div class="cart-modal" :class="{ active: modalStore.modals.cartModal }">
-    <div class="cart-modal__overlay" :class="{ active: modalStore.modals.cartModal }"></div>
+    <div
+      class="cart-modal__overlay"
+      :class="{ active: modalStore.modals.cartModal }"
+      @click="closeModal('cartModal')"
+    ></div>
     <div class="cart-modal__container" :class="{ active: modalStore.modals.cartModal }">
       <div class="cart-modal__top">
         <p class="cart-modal__title">Корзина</p>

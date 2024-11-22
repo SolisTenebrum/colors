@@ -95,6 +95,7 @@ const closeFilterModal = (modalName) => {
     <div
       class="product-list__overlay"
       :class="{ active: isSortOpen || modalStore.modals.filterModal }"
+      @click="closeFilterModal('filterModal') || closeSortFilter()"
     ></div>
     <div class="product-list__container">
       <h1 class="product-list__title">Краски</h1>
