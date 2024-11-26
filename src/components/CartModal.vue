@@ -203,11 +203,6 @@ const cartWord = computed(
   scrollbar-width: none;
 }
 
-.predeleted {
-  opacity: 40%;
-  pointer-events: none;
-}
-
 .cart-modal__bottom {
   display: flex;
   justify-content: space-between;
