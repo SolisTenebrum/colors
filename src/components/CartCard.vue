@@ -12,7 +12,7 @@ defineProps({
 </script>
 
 <template>
-  <div class="cart-card" v-for="product in cartStore.cart" :key="product">
+  <div class="cart-card">
     <img
       class="cart-card__image"
       :class="{ predeleted: product.predeleted }"
@@ -148,6 +148,11 @@ defineProps({
 
 .cart-card__delete-button.restore {
   background-image: url('../assets/images/icons/repeat.svg');
+}
+
+.predeleted {
+  opacity: 40%;
+  pointer-events: none;
 }
 
 @media screen and (max-width: 768px) {
