@@ -106,7 +106,9 @@ const closeFilterModal = (modalName) => {
           @click="toggleFilters(filter.id)"
           :key="filter"
         >
-          <div class="product-list__filter-icon" :class="{ active: filter.isActive }"></div>
+          <div class="product-list__filter-icon" :class="{ active: filter.isActive }">
+            <div class="product-list__filter-icon-dot" :class="{ active: filter.isActive }"></div>
+          </div>
           <p class="product-list__filter-text">{{ filter.name }}</p>
         </div>
       </div>
@@ -213,21 +215,6 @@ const closeFilterModal = (modalName) => {
   transition:
     transform 0.3s ease,
     visibility 0.3s ease;
-}
-
-.product-list__filter-icon {
-  width: 36px;
-  height: 22px;
-  background-image: url('../assets/images/icons/switch-off.svg');
-  background-repeat: no-repeat;
-  background-position: center;
-  background-size: 36px 22px;
-  cursor: pointer;
-  transition: background-image 0.2s ease;
-}
-
-.product-list__filter-icon.active {
-  background-image: url('../assets/images/icons/switch-on.svg');
 }
 
 .product-list__filter-text {
@@ -369,6 +356,39 @@ const closeFilterModal = (modalName) => {
   height: 2px;
   bottom: 0;
   background-color: #fff;
+}
+
+.product-list__filter-icon {
+  background-color: #f2f2f2;
+  width: 36px;
+  height: 22px;
+  border-radius: 40px;
+  position: relative;
+  cursor: pointer;
+  transition: background-color 0.3s ease-in-out;
+}
+
+.product-list__filter-icon.active {
+  background-color: #7bb899;
+}
+
+.product-list__filter-icon-dot {
+  position: absolute;
+  top: 50%;
+  left: 30%;
+  transform: translate(-50%, -50%);
+  width: 8px;
+  height: 8px;
+  background-color: #1f2020;
+  border-radius: 30px;
+  transition: transform 0.3s ease;
+}
+
+.product-list__filter-icon-dot.active {
+  right: 30%;
+  left: auto;
+  transform: translate(50%, -50%);
+  transition: transform 0.3s ease;
 }
 
 @media screen and (max-width: 1500px) {
