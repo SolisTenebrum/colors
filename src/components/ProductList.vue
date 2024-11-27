@@ -173,7 +173,10 @@ const closeFilterModal = (modalName) => {
           @click="toggleFilters(filter.id)"
           :key="filter"
         >
-          <div class="product-list__filter-icon" :class="{ active: filter.isActive }"></div>
+          <div class="product-list__filter-icon" :class="{ active: filter.isActive }">
+            <div class="product-list__filter-icon-dot" :class="{ active: filter.isActive }"></div>
+          </div>
+
           <p class="product-list__filter-text">{{ filter.name }}</p>
         </div>
       </div>
