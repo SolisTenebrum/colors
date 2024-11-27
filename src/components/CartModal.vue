@@ -55,7 +55,9 @@ const cartWord = computed(
       <div class="cart-modal__content">
         <div class="cart-modal__list-header">
           <p class="cart-modal__list-header-text">{{ cartWord }}</p>
-          <p class="cart-modal__list-header-clear" @click="cartStore.clearCart">очистить список</p>
+          <button class="cart-modal__list-header-clear" @click="cartStore.clearCart">
+            очистить список
+          </button>
           <div class="cart-modal__list-header-line"></div>
         </div>
         <simplebar
@@ -202,6 +204,8 @@ const cartWord = computed(
   font-weight: 300;
   line-height: 15.68px;
   transition: opacity 0.3s ease-in-out;
+  border: none;
+  background-color: transparent;
 }
 
 .cart-modal__list-header-clear:hover {
