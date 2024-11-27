@@ -18,9 +18,13 @@ const handleAddToCart = (product) => {
 
 <template>
   <div class="product-card">
-    <img class="product-card__image" :src="product.image" alt="paint" />
+    <a :href="'#'">
+      <img class="product-card__image" :src="product.image" alt="paint" />
+    </a>
     <div class="product-card__info">
-      <p class="product-card__name">{{ product.name }}</p>
+      <a :href="'#'" class="product-card__name">
+        {{ product.name }}
+      </a>
       <p class="product-card__price">{{ Math.floor(product.price) }} ₽</p>
       <button class="product-card__button" @click="handleAddToCart(product)">
         <plus-icon :variant="'productCard'"></plus-icon>
