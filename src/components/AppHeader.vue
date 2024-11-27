@@ -49,7 +49,7 @@ const scrollToTop = () => {
       </div>
       <div class="app-header__right">
         <div class="app-header__phone">
-          <a class="app-header__phone-link" href="tel:8452217769">+7 (495) 221-77-69</a>
+          <a class="app-header__phone-link" href="tel:8452217769">+7 (999) 123-45-67</a>
           <p class="app-header__phone-text">Заказать звонок</p>
         </div>
         <div class="app-header__icons">
