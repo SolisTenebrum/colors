@@ -5,6 +5,8 @@ import { useModalStore } from '@/store/modalStore'
 import { words } from '@/constants'
 import { computed } from 'vue'
 import CartCard from './CartCard.vue'
+import simplebar from 'simplebar-vue'
+import 'simplebar-vue/dist/simplebar.min.css'
 
 const modalStore = useModalStore()
 const cartStore = useCartStore()
@@ -54,10 +56,11 @@ const cartWord = computed(
         <div class="cart-modal__list-header">
           <p class="cart-modal__list-header-text">{{ cartWord }}</p>
           <p class="cart-modal__list-header-clear" @click="cartStore.clearCart">очистить список</p>
+          <div class="cart-modal__list-header-line"></div>
         </div>
-        <div class="cart-modal__list">
+        <simplebar data-simplebar-auto-hide="false" class="cart-modal__list">
           <CartCard v-for="product in cartStore.cart" :key="product" :product="product" />
-        </div>
+        </simplebar>
       </div>
       <div class="cart-modal__bottom">
         <div
@@ -124,7 +127,6 @@ const cartWord = computed(
   max-width: 600px;
   width: 100%;
   background-color: #fff;
-  padding: 32px 40px 40px 40px;
   display: flex;
   flex-direction: column;
   z-index: 26;
@@ -146,6 +148,7 @@ const cartWord = computed(
   justify-content: space-between;
   align-items: center;
   margin-bottom: 80px;
+  padding: 32px 40px 0 40px;
 }
 
 .cart-modal__title {
@@ -168,14 +171,17 @@ const cartWord = computed(
 .cart-modal__content {
   display: flex;
   flex-direction: column;
+  padding-right: 10px;
+  padding-left: 10px;
 }
 
 .cart-modal__list-header {
   display: flex;
   justify-content: space-between;
   padding-bottom: 10px;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
   margin-bottom: 12px;
+  padding: 0 40px 10px;
+  position: relative;
 }
 
 .cart-modal__list-header-text {
@@ -197,22 +203,36 @@ const cartWord = computed(
   opacity: 100%;
 }
 
+.cart-modal__list-header-line {
+  margin: 0 auto;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 90%;
+  height: 1px;
+  background-color: rgba(0, 0, 0, 0.1);
+  position: absolute;
+}
+
 .cart-modal__list {
   max-height: calc(100vh - 350px);
   overflow-y: auto;
-  scrollbar-width: none;
+  padding: 0 30px 0 30px;
 }
 
 .cart-modal__bottom {
   display: flex;
   justify-content: space-between;
   margin-top: auto;
+  padding: 0 40px 40px 40px;
+  column-gap: 30px;
 }
 
 .cart-modal__total {
   display: flex;
   flex-direction: column;
   row-gap: 6px;
+  flex-shrink: 0;
 }
 
 .cart-modal__total_disabled {
@@ -234,8 +254,11 @@ const cartWord = computed(
 
 .cart-modal__button {
   cursor: pointer;
-  width: 240px;
-  height: 56px;
+
+  /* max-width: 240px; */
+  /* width: 100%; */
+  /* height: 56px; */
+  padding: 20px 58px;
   background-color: #7bb899;
   border: none;
   border-radius: 4px;
@@ -262,8 +285,17 @@ const cartWord = computed(
 }
 
 @media screen and (max-width: 768px) {
-  .cart-modal__container {
-    padding: 32px 20px;
+  .cart-modal__top {
+    padding: 32px 25px 0 25px;
+  }
+
+  .cart-modal__list {
+    padding: 0 15px;
+  }
+
+  .cart-modal__bottom {
+    padding: 0 25px 40px;
+    column-gap: 18px;
   }
 }
 
@@ -277,7 +309,7 @@ const cartWord = computed(
   }
 
   .cart-modal__button {
-    width: 150px;
+    padding: 16px 30px;
   }
 }
 </style>

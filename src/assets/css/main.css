@@ -5,3 +5,27 @@
   margin: 0 auto;
   font-weight: normal;
 }
+
+.simplebar-scrollbar {
+  background-color: #8d8d8d;
+  border-radius: 30px;
+}
+
+.simplebar-scrollbar:before {
+  background-color: transparent !important;
+}
+
+.simplebar-track {
+  background-color: #dfdfdf;
+  border-radius: 30px;
+}
+
+@media screen and (max-width: 768px) {
+  .simplebar-scrollbar {
+    width: 4px !important;
+  }
+
+  .simplebar-track {
+    width: 4px !important;
+  }
+}
