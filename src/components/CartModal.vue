@@ -58,7 +58,12 @@ const cartWord = computed(
           <p class="cart-modal__list-header-clear" @click="cartStore.clearCart">очистить список</p>
           <div class="cart-modal__list-header-line"></div>
         </div>
-        <simplebar data-simplebar-auto-hide="false" class="cart-modal__list">
+        <simplebar
+          data-simplebar-auto-hide="false"
+          class="cart-modal__list"
+          force-visible="false"
+          :style="{ height: '100%' }"
+        >
           <CartCard v-for="product in cartStore.cart" :key="product" :product="product" />
         </simplebar>
       </div>
@@ -254,10 +259,6 @@ const cartWord = computed(
 
 .cart-modal__button {
   cursor: pointer;
-
-  /* max-width: 240px; */
-  /* width: 100%; */
-  /* height: 56px; */
   padding: 20px 58px;
   background-color: #7bb899;
   border: none;
@@ -293,6 +294,10 @@ const cartWord = computed(
     padding: 0 15px;
   }
 
+  .cart-modal__list-header {
+    padding: 0 30px 10px;
+  }
+
   .cart-modal__bottom {
     padding: 0 25px 40px;
     column-gap: 18px;
@@ -300,6 +305,14 @@ const cartWord = computed(
 }
 
 @media screen and (max-width: 480px) {
+  .cart-modal__list-header {
+    padding: 0 25px 10px;
+  }
+
+  .cart-modal__list-header-line {
+    width: 93%;
+  }
+
   .cart-modal__total-text {
     font-size: 14px;
   }
