@@ -1,5 +1,5 @@
 <script setup>
-import plus from '../assets/images/icons/plus.svg'
+import PlusIcon from './icons/PlusIcon.vue'
 import { useCartStore } from '@/store/cartStore'
 
 const cartStore = useCartStore()
@@ -23,7 +23,7 @@ const handleAddToCart = (product) => {
       <p class="product-card__name">{{ product.name }}</p>
       <p class="product-card__price">{{ Math.floor(product.price) }} ₽</p>
       <button class="product-card__button" @click="handleAddToCart(product)">
-        <img :src="plus" class="product-card__button-icon" />
+        <plus-icon :variant="'productCard'"></plus-icon>
       </button>
     </div>
   </div>

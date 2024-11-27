@@ -1,5 +1,7 @@
 <script setup>
 import { useCartStore } from '@/store/cartStore'
+import PlusIcon from './icons/PlusIcon.vue'
+import MinusIcon from './icons/MinusIcon.vue'
 
 const cartStore = useCartStore()
 
@@ -24,17 +26,18 @@ defineProps({
     </div>
     <div class="cart-card__quantity" :class="{ predeleted: product.predeleted }">
       <button
-        class="cart-card__quantity-button minus"
+        class="cart-card__quantity-button"
         :class="{
           'cart-card__quantity-button_disabled': product.quantity === 1,
         }"
         @click="cartStore.decrement(product)"
-      ></button>
+      >
+        <minus-icon></minus-icon>
+      </button>
       <p class="cart-card__quantity-text">{{ product.quantity }}</p>
-      <button
-        class="cart-card__quantity-button plus"
-        @click="cartStore.increment(product)"
-      ></button>
+      <button class="cart-card__quantity-button" @click="cartStore.increment(product)">
+        <plus-icon :variant="'cartCard'"></plus-icon>
+      </button>
     </div>
     <button
       class="cart-card__delete-button"
@@ -104,6 +107,9 @@ defineProps({
   border-radius: 8px;
   cursor: pointer;
   transition: background-color 0.3s ease-in-out;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .cart-card__quantity-button:hover {
@@ -112,19 +118,6 @@ defineProps({
 
 .cart-card__quantity-button_disabled {
   visibility: hidden;
-}
-
-.cart-card__quantity-button.minus {
-  background-image: url('../assets/images/icons/minus.svg');
-  background-repeat: no-repeat;
-  background-position: center;
-  background-size: 16px;
-}
-.cart-card__quantity-button.plus {
-  background-image: url('../assets/images/icons/plus.svg');
-  background-repeat: no-repeat;
-  background-position: center;
-  background-size: 16px;
 }
 
 .cart-card__quantity-text {
