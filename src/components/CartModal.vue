@@ -13,7 +13,6 @@ const cartStore = useCartStore()
 
 const closeModal = (modalName) => {
   modalStore.closeModal(modalName)
-  document.body.style.overflow = 'auto'
 }
 
 const getWordForm = (number, words) => {
@@ -63,7 +62,6 @@ const cartWord = computed(
         <simplebar
           data-simplebar-auto-hide="false"
           class="cart-modal__list"
-          force-visible="false"
           :style="{ height: '100%' }"
         >
           <CartCard v-for="product in cartStore.cart" :key="product" :product="product" />

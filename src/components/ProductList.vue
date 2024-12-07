@@ -47,12 +47,10 @@ const toggleFilters = (filterId) => {
 
 const openSortFilter = () => {
   isSortOpen.value = !isSortOpen.value
-  document.body.style.overflow = 'hidden'
 }
 
 const closeSortFilter = () => {
   isSortOpen.value = false
-  document.body.style.overflow = 'auto'
 }
 
 const selectSort = (sortId, sortText) => {
@@ -81,12 +79,10 @@ const selectSort = (sortId, sortText) => {
 
 const openFilterModal = (modalName) => {
   modalStore.openModal(modalName)
-  document.body.style.overflow = 'hidden'
 }
 
 const closeFilterModal = (modalName) => {
   modalStore.closeModal(modalName)
-  document.body.style.overflow = 'auto'
 }
 </script>
 

@@ -13,12 +13,10 @@ const cartStore = useCartStore()
 
 const openModal = (modalName) => {
   modalStore.openModal(modalName)
-  document.body.style.overflow = 'hidden'
 }
 
 const closeModal = (modalName) => {
   modalStore.closeModal(modalName)
-  document.body.style.overflow = 'auto'
 }
 
 const scrollToTop = () => {
