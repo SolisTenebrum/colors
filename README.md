@@ -12,3 +12,10 @@
 - Swiper
 - simplebar-vue
 - mockAPI (mockapi.io)
+
+## Features
+
+- Adaptive and responsive design for different screen sizes
+- Smooth animations and transitions
+- State management with Pinia
+- Integration with mockAPI (mockapi.io) for data handling
