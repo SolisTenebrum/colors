@@ -1,4 +1,4 @@
-import slideOne from './1.png'
+import slideOne from './1.jpg'
 import slideTwo from './2.jpg'
 import slideThree from './3.jpg'
 import slideFour from './4.jpg'
